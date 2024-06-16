@@ -27,7 +27,6 @@ This project is a simple implementation of the classic Tetris game using the [ra
 
    ```sh
    git clone https://github.com/adermgram/Tetris-game.git
-   cd tetris-game
    ```
 2. Ensure that you have raylib installed on your system. You can install it via your package manager, or download it from the [raylib](https://www.raylib.com/)  website.
 3. Compile the project and run the game
