@@ -1,4 +1,5 @@
 #include "game.h"
+#include <ctime>
 #include <random>
 
 Game::Game()
@@ -6,6 +7,7 @@ Game::Game()
     blocks = getAllBlocks();
     currentBlock = getRandomBlock();
     nextBlock = getRandomBlock();
+    srand(time(NULL));
 }
 
 Game::~Game()
