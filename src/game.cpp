@@ -1,13 +1,13 @@
 #include "game.h"
 #include <random>
+
 Game::Game()
 {
-    grid = Grid();
     blocks = getAllBlocks();
     currentBlock = getRandomBlock();
     nextBlock = getRandomBlock();
-    gameOver = false;
-    score = 0;
+}
+
     InitAudioDevice();
     music = LoadMusicStream("sounds/music.mp3");
     PlayMusicStream(music);
@@ -20,7 +20,7 @@ Game::~Game()
     UnloadSound(clearSound);
     UnloadMusicStream(music);
     CloseAudioDevice();
-
+}
 }
 
 Block Game::getRandomBlock()
