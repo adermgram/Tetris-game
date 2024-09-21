@@ -1,5 +1,5 @@
 #include "tetris.h"
 int main()
 {
-    new Tetris();
+    auto game = Tetris();
 }
