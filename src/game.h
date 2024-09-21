@@ -1,12 +1,15 @@
 #pragma once
 #include "grid.h"
 #include "blocks.cpp"
+#include <string>
 
 class Game
 {
 public:
     Game();
     ~Game();
+
+    void init(std::string build_path);
 
     void draw();
     void handleInput();

@@ -1,5 +1,6 @@
 #include "tetris.h"
-int main()
+int main(int argc, char* argv[])
 {
-    auto game = Tetris();
+    auto game = Tetris(argc, argv);
+    game.run();
 }

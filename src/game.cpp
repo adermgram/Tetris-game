@@ -8,12 +8,6 @@ Game::Game()
     nextBlock = getRandomBlock();
 }
 
-    InitAudioDevice();
-    music = LoadMusicStream("sounds/music.mp3");
-    PlayMusicStream(music);
-    rotateSound = LoadSound("sounds/rotate.mp3");
-    clearSound = LoadSound("sounds/clear.mp3");
-}
 Game::~Game()
 {
     UnloadSound(rotateSound);
@@ -21,6 +15,14 @@ Game::~Game()
     UnloadMusicStream(music);
     CloseAudioDevice();
 }
+
+void Game::init(std::string build_path)
+{
+    InitAudioDevice();
+    music = LoadMusicStream((build_path + "sounds/music.mp3").c_str());
+    PlayMusicStream(music);
+    rotateSound = LoadSound((build_path + "sounds/rotate.mp3").c_str());
+    clearSound = LoadSound((build_path + "sounds/clear.mp3").c_str());
 }
 
 Block Game::getRandomBlock()
