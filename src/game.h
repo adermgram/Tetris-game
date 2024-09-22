@@ -1,27 +1,29 @@
 #pragma once
 #include "grid.h"
 #include "blocks.cpp"
+#include <string>
 
 class Game
 {
 public:
     Game();
-
     ~Game();
+
+    void init(std::string build_path);
 
     void draw();
     void handleInput();
   
     void moveBlockDown();
 
-    bool gameOver;
-    int score;
+    bool gameOver = false;
+    int score = 0;
     Music music;
 
 private:
-  void moveBlockLeft();
+    void moveBlockLeft();
     void moveBlockRight();
-Block getRandomBlock();
+    Block getRandomBlock();
     std::vector<Block> getAllBlocks();
     bool isBlockOutside();
     void rotateBlock();
@@ -29,7 +31,7 @@ Block getRandomBlock();
     bool blockFits();
     void reset();
     void updateScore(int linesCleared, int moveDownPoints);
-        Grid grid;
+    Grid grid;
     std::vector<Block> blocks;
     Block currentBlock;
     Block nextBlock;

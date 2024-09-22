@@ -1,13 +1,10 @@
 #include "tetris.h"
 #include <raylib.h>
-#include "game.h"
-#include "colors.h"
 #include <iostream>
+#include <cstring>
+#include <cstdlib>
 
-double lastUpdateTime = 0;
-
-bool EventTriggered(double interval)
-{
+bool Tetris::EventTriggered(double interval) {
     double currentTime = GetTime();
     if (currentTime - lastUpdateTime >= interval)
     {
@@ -17,28 +14,39 @@ bool EventTriggered(double interval)
     return false;
 }
 
-Tetris::Tetris()
+Tetris::Tetris(int argc, char* argv[])
 {
+    char* last = strrchr(argv[0], '/');
+    if (last != NULL) {
+        *++last = '\0';
+        build_path = argv[0];
+    }
+
     InitWindow(500, 620, "Tetris");
     SetTargetFPS(60);
+    font = Font(LoadFontEx((build_path + "fonts/BebasNeue-Regular.ttf").c_str(), 64, 0, 0));
+    game.init(build_path);
+}
 
-    Font font = LoadFontEx("fonts/BebasNeue-Regular.ttf", 64, 0, 0);
+Tetris::~Tetris()
+{
+    UnloadFont(font);
+    CloseWindow();
+}
 
-    Game game = Game();
-    while (WindowShouldClose() == false) 
-    {
+void Tetris::run()
+{
+    while (WindowShouldClose() == false) {
         UpdateMusicStream(game.music);
         game.handleInput();
-        if (EventTriggered(0.2))
-        {
+        if (EventTriggered(0.2)) {
             game.moveBlockDown();
         }
         BeginDrawing();
         ClearBackground(black);
         DrawTextEx(font, "Score", {365, 15}, 38, 2, WHITE);
         DrawTextEx(font, "Next", {370, 175}, 38, 2, WHITE);
-        if (game.gameOver)
-        {
+        if (game.gameOver) {
             DrawTextEx(font, "GAME OVER", {345, 450}, 40, 2, WHITE);
         }
         DrawRectangleRounded({320, 55, 170, 60}, 0.3, 6, darkGrey);
@@ -52,7 +60,4 @@ Tetris::Tetris()
         game.draw();
         EndDrawing();
     }
-
-    UnloadFont(font);
-    CloseWindow();
 }

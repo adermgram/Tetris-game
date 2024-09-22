@@ -1,26 +1,30 @@
 #include "game.h"
+#include <ctime>
 #include <random>
+
 Game::Game()
 {
-    grid = Grid();
     blocks = getAllBlocks();
     currentBlock = getRandomBlock();
     nextBlock = getRandomBlock();
-    gameOver = false;
-    score = 0;
-    InitAudioDevice();
-    music = LoadMusicStream("sounds/music.mp3");
-    PlayMusicStream(music);
-    rotateSound = LoadSound("sounds/rotate.mp3");
-    clearSound = LoadSound("sounds/clear.mp3");
+    srand(time(NULL));
 }
+
 Game::~Game()
 {
     UnloadSound(rotateSound);
     UnloadSound(clearSound);
     UnloadMusicStream(music);
     CloseAudioDevice();
+}
 
+void Game::init(std::string build_path)
+{
+    InitAudioDevice();
+    music = LoadMusicStream((build_path + "sounds/music.mp3").c_str());
+    PlayMusicStream(music);
+    rotateSound = LoadSound((build_path + "sounds/rotate.mp3").c_str());
+    clearSound = LoadSound((build_path + "sounds/clear.mp3").c_str());
 }
 
 Block Game::getRandomBlock()
