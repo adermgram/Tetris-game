@@ -3,12 +3,12 @@
 #include <random>
 
 Game::Game()
-{
-    blocks = getAllBlocks();
-    currentBlock = getRandomBlock();
-    nextBlock = getRandomBlock();
-    srand(time(NULL));
-}
+: grid()
+, currentBlock(getRandomBlock())
+, nextBlock(getRandomBlock())
+, rotateSound()
+, clearSound()
+{}
 
 Game::~Game()
 {
@@ -18,38 +18,57 @@ Game::~Game()
     CloseAudioDevice();
 }
 
-void Game::init(std::string build_path)
+bool Game::init(const std::string& build_path)
 {
+    bool success = false;
     InitAudioDevice();
     music = LoadMusicStream((build_path + "sounds/music.mp3").c_str());
-    PlayMusicStream(music);
-    rotateSound = LoadSound((build_path + "sounds/rotate.mp3").c_str());
-    clearSound = LoadSound((build_path + "sounds/clear.mp3").c_str());
-}
-
-Block Game::getRandomBlock()
-{
-    if (blocks.empty())
+    assert(music.ctxData);
+    if (music.ctxData)
     {
-        blocks = getAllBlocks();
+        PlayMusicStream(music);
+        rotateSound = LoadSound((build_path + "sounds/rotate.mp3").c_str());
+        assert(rotateSound.frameCount > 0 );
+        if (rotateSound.frameCount > 0)
+        {
+            clearSound = LoadSound((build_path + "sounds/clear.mp3").c_str());
+            assert(clearSound.frameCount > 0 );
+            if (clearSound.frameCount > 0)
+            {
+                success = true;
+            }
+            else
+            {
+                UnloadSound(rotateSound);
+                UnloadMusicStream(music);
+            }
+        }
+        else
+        {
+            UnloadMusicStream(music);
+        }
     }
-    int randomIndex = rand() % blocks.size();
-    Block block = blocks[randomIndex];
-    blocks.erase(blocks.begin() + randomIndex);
-
-    return block;
+    return success;
 }
 
-std::vector<Block> Game::getAllBlocks()
+const Block& Game::getRandomBlock() const
 {
-    return {IBlock(), JBlock(), LBlock(), OBlock(), SBlock(), TBlock(), ZBlock()};
+    const std::vector<Block>& blocks(getAllBlocks());
+    const int randomIndex (random() % blocks.size());
+    return blocks[randomIndex];
 }
 
-void Game::draw()
+const std::vector<Block>& Game::getAllBlocks() const
+{
+    static std::vector<Block> sAllBlocks{IBlock(), JBlock(), LBlock(), OBlock(), SBlock(), TBlock(), ZBlock()};
+    return sAllBlocks;
+}
+
+void Game::draw() const
 {
     grid.draw();
     currentBlock.draw(11, 11);
-    switch (nextBlock.id)
+    switch (nextBlock.getId())
     {
     case 3:
         nextBlock.draw(255, 290);
@@ -120,7 +139,7 @@ void Game::moveBlockDown()
     }
 }
 
-bool Game::isBlockOutside()
+bool Game::isBlockOutside() const
 {
     std::vector<Position> tiles = currentBlock.getCellPositions();
     for (Position item : tiles)
@@ -167,7 +186,7 @@ void Game::lockBlock()
     std::vector<Position> tiles = currentBlock.getCellPositions();
     for (Position item : tiles)
     {
-        grid.grid[item.row][item.column] = currentBlock.id;
+        grid.grid(item.row, item.column) = currentBlock.getId();
     }
     currentBlock = nextBlock;
     if (!blockFits())
@@ -181,7 +200,6 @@ void Game::lockBlock()
         PlaySound(clearSound);
         updateScore(rowsCleared, 0);
     }
-    
 }
 
 bool Game::blockFits()
@@ -201,13 +219,12 @@ bool Game::blockFits()
 void Game::reset()
 {
     grid.initialize();
-    blocks = getAllBlocks();
     currentBlock = getRandomBlock();
     nextBlock = getRandomBlock();
     score = 0;
 }
 
-void Game::updateScore(int linesCleared, int moveDownPoints)
+void Game::updateScore(unsigned int linesCleared, unsigned int moveDownPoints)
 {
     switch (linesCleared)
     {

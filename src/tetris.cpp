@@ -4,8 +4,8 @@
 #include <cstring>
 #include <cstdlib>
 
-bool Tetris::EventTriggered(double interval) {
-    double currentTime = GetTime();
+bool Tetris::EventTriggered(float interval) {
+    const auto currentTime = GetTime();
     if (currentTime - lastUpdateTime >= interval)
     {
         lastUpdateTime = currentTime;
@@ -25,7 +25,8 @@ Tetris::Tetris(int argc, char* argv[])
     InitWindow(500, 620, "Tetris");
     SetTargetFPS(60);
     font = Font(LoadFontEx((build_path + "fonts/BebasNeue-Regular.ttf").c_str(), 64, 0, 0));
-    game.init(build_path);
+    const bool gameInitSuccess = game.init(build_path);
+    assert(gameInitSuccess);
 }
 
 Tetris::~Tetris()

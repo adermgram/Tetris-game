@@ -10,11 +10,11 @@ class Tetris {
     void run();
 
   private:
-    bool EventTriggered(double interval);
+    bool EventTriggered(float interval);
 
   private:
     std::string build_path;
     Font font;
     Game game;
-    double lastUpdateTime = 0;
+    float lastUpdateTime = 0;
 };

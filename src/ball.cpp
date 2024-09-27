@@ -1,15 +1,6 @@
 #include "ball.h"
 #include <raylib.h>
 
-Ball::Ball()
-{
-    x = 100;
-    y = 100;
-    speedX = 5;
-    speedY = 5;
-    radius = 15;
-}
-
 void Ball::Update()
 {
     x += speedX;

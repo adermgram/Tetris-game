@@ -9,30 +9,37 @@ public:
     Game();
     ~Game();
 
-    void init(std::string build_path);
+    // This class is not ought to be copied or assigned!
+    Game(const Game&) = delete;
+    Game(Game&&) = delete;
+    Game& operator= (const Game&) = delete;
+    Game& operator= (Game&&) = delete;
 
-    void draw();
+    bool init(const std::string& build_path);
+
+    void draw() const;
     void handleInput();
-  
+
     void moveBlockDown();
 
     bool gameOver = false;
     int score = 0;
     Music music;
 
-private:
+private: // methods
     void moveBlockLeft();
     void moveBlockRight();
-    Block getRandomBlock();
-    std::vector<Block> getAllBlocks();
-    bool isBlockOutside();
+    const Block& getRandomBlock() const;
+    const std::vector<Block>& getAllBlocks() const;
+    bool isBlockOutside() const;
     void rotateBlock();
     void lockBlock();
     bool blockFits();
     void reset();
-    void updateScore(int linesCleared, int moveDownPoints);
+    void updateScore(unsigned int linesCleared, unsigned int moveDownPoints);
+
+private: // members
     Grid grid;
-    std::vector<Block> blocks;
     Block currentBlock;
     Block nextBlock;
     Sound rotateSound;

@@ -2,71 +2,61 @@
 #include <iostream>
 #include "colors.h"
 
-Grid::Grid()
+Grid::Grid() : numRows(20), numCols(10), cellSize(30)
 {
-    numRows = 20;
-    numCols = 10;
-    cellSize = 30;
     initialize();
-    colors = getCellColors();
 }
 
 void Grid::initialize()
 {
-    for (int row = 0; row < numRows; row++)
+    for (unsigned int row = 0; row < numRows; ++row)
     {
-        for (int col = 0; col < numCols; col++)
+        for (unsigned int col = 0; col < numCols; ++col)
         {
-            grid[row][col] = 0;
+            _grid[row][col] = 0;
         }
     }
 }
 
 void Grid::print()
 {
-    for (int row = 0; row < numRows; row++)
+    for (unsigned int row = 0; row < numRows; ++row)
     {
-        for (int col = 0; col < numCols; col++)
+        for (unsigned int col = 0; col < numCols; ++col)
         {
-            std::cout << grid[row][col] << " ";
+            std::cout << _grid[row][col] << " ";
         }
         std::cout << std::endl;
     }
 }
 
-void Grid::draw()
+void Grid::draw() const
 {
-    for (int row = 0; row < numRows; row++)
+    const auto& colors(getCellColors());
+    for (unsigned int row = 0; row < numRows; ++row)
     {
-        for (int col = 0; col < numCols; col++)
+        for (unsigned int col = 0; col < numCols; ++col)
         {
-            int cellValue = grid[row][col];
+            int cellValue = _grid[row][col];
             DrawRectangle(col * cellSize + 11, row * cellSize + 11, cellSize - 1, cellSize - 1, colors[cellValue]);
         }
     }
 }
 
-bool Grid::isCellOutside(int row, int column)
+bool Grid::isCellOutside(unsigned int row, unsigned int column) const
 {
-    if (row >= 0 && row < numRows && column >= 0 && column < numCols)
-    {
-        return false;
-    }
-    return true;
+    return !(row >= 0 && row < numRows && column >= 0 && column < numCols);
 }
 
-bool Grid::isCellEmpty(int row, int column)
+bool Grid::isCellEmpty(unsigned int row, unsigned int column) const
 {
-    if(grid[row][column ]== 0){
-        return true;
-    }
-    return false;
+    return (0 == _grid[row][column ]);
 }
 
-int Grid::clearFullRows()
+unsigned int Grid::clearFullRows()
 {
-    int completed = 0;
-    for(int row = numRows-1; row>=0; row--)
+    unsigned int completed = 0;
+    for(int row = numRows-1; row>=0; --row)
     {
         if(isRowFull(row))
         {
@@ -81,33 +71,34 @@ int Grid::clearFullRows()
     return completed;
 }
 
-bool Grid::isRowFull(int row)
+bool Grid::isRowFull(unsigned int row) const
 {
-    for(int column = 0; column < numCols ; column++)
+    bool isFull = true;
+    for(unsigned int column = 0; column < numCols ; ++column)
     {
-        if(grid[row][column] == 0)
+        if(_grid[row][column] == 0)
         {
-            return false;
+            isFull = false;
+            break;
         }
     }
-    return true;
+    return isFull;
 }
 
-void Grid::clearRow(int row)
+void Grid::clearRow(unsigned int row)
 {
-     for(int column = 0; column < numCols ; column++)
+    for(unsigned int column = 0; column < numCols ; ++column)
     {
-        grid[row][column] = 0;
+        _grid[row][column] = 0;
     }
 }
 
-void Grid::moveRowDown(int row, int numRows)
+void Grid::moveRowDown(unsigned int row, unsigned int numRows)
 {
-    
-    for(int column = 0; column < numCols; column++)
+    for(unsigned int column = 0; column < numCols; ++column)
     {
-        grid[row + numRows][column] = grid[row][column]; 
-        grid[row][column] = 0;
+        _grid[row + numRows][column] = _grid[row][column];
+        _grid[row][column] = 0;
     }
 
 }

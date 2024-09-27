@@ -9,19 +9,24 @@ class Block
 {
 public:
     Block();
-    void draw(int offsetX, int offsetY);
+    void draw(int offsetX, int offsetY) const;
     void move(int rows, int columns);
-    
-    std::vector<Position> getCellPositions();
+
+    using PositionVector = std::vector<Position>;
+
+    PositionVector getCellPositions() const;
     void rotate();
     void undoRotation();
+
+    unsigned int getId() const {return id;}
+    
+protected:
     int id;
-    std::map<int, std::vector<Position>> cells;
+    std::map<int, PositionVector> cells;
 
 private:
     int cellSize;
     int rotationState;
-    std::vector<Color> colors;
     int rowOffset;
     int columnOffset;
 };
