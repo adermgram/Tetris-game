@@ -1,18 +1,20 @@
 #include "block.h"
 
 Block::Block()
-{
-    cellSize = 30;
-    rotationState = 0;
-    colors = getCellColors();
-    rowOffset = 0;
-    columnOffset = 0;
-}
+: id(0)
+, cells()
+, cellSize(30)
+, rotationState(0)
+, rowOffset(0)
+, columnOffset(0)
+{}
 
-void Block::draw(int offsetX, int offsetY)
+void Block::draw(int offsetX, int offsetY) const
 {
-    std::vector<Position> tiles = getCellPositions();
-    for (Position item : tiles)
+    const auto& colors(getCellColors());
+    
+    const std::vector<Position> tiles = getCellPositions();
+    for (const Position& item : tiles)
     {
         DrawRectangle(item.column * cellSize + offsetX, item.row * cellSize + offsetY, cellSize - 1, cellSize - 1, colors[id]);
     }
@@ -25,16 +27,20 @@ void Block::move(int rows, int columns)
 }
 
 
-std::vector<Position> Block::getCellPositions()
+std::vector<Position> Block::getCellPositions() const
 {
-    std::vector<Position> tiles = cells[rotationState];
     std::vector<Position> movedTiles;
-    for(Position item: tiles) 
-    {
-        Position newPos = Position(item.row + rowOffset, item.column+columnOffset);
-        movedTiles.push_back(newPos);
-    }
 
+    const auto cellIt = cells.find(rotationState);
+    if (cellIt != cells.end())
+    {
+        const std::vector<Position>& tiles(cellIt->second);
+        for(const Position& item: tiles)
+        {
+            const Position newPos(item.row + rowOffset, item.column+columnOffset);
+            movedTiles.push_back(newPos);
+        }
+    }
     return movedTiles;
 }
 

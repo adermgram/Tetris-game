@@ -14,4 +14,4 @@ extern const Color lightBlue;
 extern const Color darkBlue;
 extern const Color black;
 
-std::vector<Color> getCellColors();
+const std::vector<Color>& getCellColors();
