@@ -37,7 +37,7 @@ std::vector<Position> Block::getCellPositions() const
         const std::vector<Position>& tiles(cellIt->second);
         for(const Position& item: tiles)
         {
-            Position newPos = Position(item.row + rowOffset, item.column+columnOffset);
+            const Position newPos(item.row + rowOffset, item.column+columnOffset);
             movedTiles.push_back(newPos);
         }
     }
