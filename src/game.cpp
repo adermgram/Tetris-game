@@ -1,14 +1,12 @@
 #include "game.h"
 #include <ctime>
 #include <random>
+#include <cassert>
 
 Game::Game()
-: grid()
-, currentBlock(getRandomBlock())
-, nextBlock(getRandomBlock())
-, rotateSound()
-, clearSound()
-{}
+    : grid(), currentBlock(getRandomBlock()), nextBlock(getRandomBlock()), rotateSound(), clearSound()
+{
+}
 
 Game::~Game()
 {
@@ -18,7 +16,7 @@ Game::~Game()
     CloseAudioDevice();
 }
 
-bool Game::init(const std::string& build_path)
+bool Game::init(const std::string &build_path)
 {
     bool success = false;
     InitAudioDevice();
@@ -28,11 +26,11 @@ bool Game::init(const std::string& build_path)
     {
         PlayMusicStream(music);
         rotateSound = LoadSound((build_path + "sounds/rotate.mp3").c_str());
-        assert(rotateSound.frameCount > 0 );
+        assert(rotateSound.frameCount > 0);
         if (rotateSound.frameCount > 0)
         {
             clearSound = LoadSound((build_path + "sounds/clear.mp3").c_str());
-            assert(clearSound.frameCount > 0 );
+            assert(clearSound.frameCount > 0);
             if (clearSound.frameCount > 0)
             {
                 success = true;
@@ -51,14 +49,14 @@ bool Game::init(const std::string& build_path)
     return success;
 }
 
-const Block& Game::getRandomBlock() const
+const Block &Game::getRandomBlock() const
 {
-    const std::vector<Block>& blocks(getAllBlocks());
-    const int randomIndex (random() % blocks.size());
+    const std::vector<Block> &blocks(getAllBlocks());
+    const int randomIndex(rand() % blocks.size());
     return blocks[randomIndex];
 }
 
-const std::vector<Block>& Game::getAllBlocks() const
+const std::vector<Block> &Game::getAllBlocks() const
 {
     static std::vector<Block> sAllBlocks{IBlock(), JBlock(), LBlock(), OBlock(), SBlock(), TBlock(), ZBlock()};
     return sAllBlocks;
@@ -195,7 +193,7 @@ void Game::lockBlock()
     }
     nextBlock = getRandomBlock();
     int rowsCleared = grid.clearFullRows();
-    if(rowsCleared > 0)
+    if (rowsCleared > 0)
     {
         PlaySound(clearSound);
         updateScore(rowsCleared, 0);

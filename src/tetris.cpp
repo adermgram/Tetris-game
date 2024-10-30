@@ -3,8 +3,10 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
+#include <cassert>
 
-bool Tetris::EventTriggered(float interval) {
+bool Tetris::EventTriggered(float interval)
+{
     const auto currentTime = GetTime();
     if (currentTime - lastUpdateTime >= interval)
     {
@@ -14,10 +16,11 @@ bool Tetris::EventTriggered(float interval) {
     return false;
 }
 
-Tetris::Tetris(int argc, char* argv[])
+Tetris::Tetris(int argc, char *argv[])
 {
-    char* last = strrchr(argv[0], '/');
-    if (last != NULL) {
+    char *last = strrchr(argv[0], '/');
+    if (last != NULL)
+    {
         *++last = '\0';
         build_path = argv[0];
     }
@@ -37,17 +40,20 @@ Tetris::~Tetris()
 
 void Tetris::run()
 {
-    while (WindowShouldClose() == false) {
+    while (WindowShouldClose() == false)
+    {
         UpdateMusicStream(game.music);
         game.handleInput();
-        if (EventTriggered(0.2)) {
+        if (EventTriggered(0.2))
+        {
             game.moveBlockDown();
         }
         BeginDrawing();
         ClearBackground(black);
         DrawTextEx(font, "Score", {365, 15}, 38, 2, WHITE);
         DrawTextEx(font, "Next", {370, 175}, 38, 2, WHITE);
-        if (game.gameOver) {
+        if (game.gameOver)
+        {
             DrawTextEx(font, "GAME OVER", {345, 450}, 40, 2, WHITE);
         }
         DrawRectangleRounded({320, 55, 170, 60}, 0.3, 6, darkGrey);

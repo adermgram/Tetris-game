@@ -1,9 +1,10 @@
 #include "tetris.h"
 #include <cstdlib>
+#include <ctime>
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-    srandom(time(nullptr));
+    srand(time(nullptr));
     Tetris game(argc, argv);
     game.run();
     return EXIT_FAILURE;
