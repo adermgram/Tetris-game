@@ -1,6 +1,7 @@
 #include "game.h"
 #include <ctime>
 #include <random>
+#include <cassert>
 
 Game::Game()
 : grid()
@@ -54,7 +55,7 @@ bool Game::init(const std::string& build_path)
 const Block& Game::getRandomBlock() const
 {
     const std::vector<Block>& blocks(getAllBlocks());
-    const int randomIndex (random() % blocks.size());
+    const int randomIndex (rand() % blocks.size());
     return blocks[randomIndex];
 }
 
@@ -222,6 +223,7 @@ void Game::reset()
     currentBlock = getRandomBlock();
     nextBlock = getRandomBlock();
     score = 0;
+    gameOver = false;
 }
 
 void Game::updateScore(unsigned int linesCleared, unsigned int moveDownPoints)

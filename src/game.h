@@ -16,6 +16,7 @@ public:
     Game& operator= (Game&&) = delete;
 
     bool init(const std::string& build_path);
+     void reset();
 
     void draw() const;
     void handleInput();
@@ -35,7 +36,6 @@ private: // methods
     void rotateBlock();
     void lockBlock();
     bool blockFits();
-    void reset();
     void updateScore(unsigned int linesCleared, unsigned int moveDownPoints);
 
 private: // members

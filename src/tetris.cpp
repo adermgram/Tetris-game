@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
+#include <cassert>
 
 bool Tetris::EventTriggered(float interval) {
     const auto currentTime = GetTime();
@@ -49,6 +50,18 @@ void Tetris::run()
         DrawTextEx(font, "Next", {370, 175}, 38, 2, WHITE);
         if (game.gameOver) {
             DrawTextEx(font, "GAME OVER", {345, 450}, 40, 2, WHITE);
+            
+            DrawRectangleRounded({350, 500, 100, 50}, 0.3, 6, RED);
+            DrawTextEx(font, "Restart", {360, 510}, 24, 2, BLACK);
+
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                Vector2 mousePosition = GetMousePosition();
+                Rectangle restartButton = {350, 500, 100, 50};
+
+                if (CheckCollisionPointRec(mousePosition, restartButton)) {
+                    game.reset();
+                }
+            }
         }
         DrawRectangleRounded({320, 55, 170, 60}, 0.3, 6, darkGrey);
 
