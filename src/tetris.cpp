@@ -38,7 +38,7 @@ void Tetris::run()
     while (WindowShouldClose() == false) {
         UpdateMusicStream(game.music);
         game.handleInput();
-        if (EventTriggered(0.2)) {
+        if (!game.paused && EventTriggered(game.getFallInterval())) {
             game.moveBlockDown();
         }
         BeginDrawing();
@@ -46,20 +46,22 @@ void Tetris::run()
         DrawTextEx(font, "Score", {365, 15}, 38, 2, WHITE);
         DrawTextEx(font, "Next", {370, 175}, 38, 2, WHITE);
         if (game.gameOver) {
-            DrawTextEx(font, "GAME OVER", {345, 450}, 40, 2, WHITE);
+            DrawTextEx(font, "GAME OVER", {345, 475}, 40, 2, WHITE);
             
-            DrawRectangleRounded({350, 500, 100, 50}, 0.3, 6, RED);
-            DrawTextEx(font, "Restart", {360, 510}, 24, 2, BLACK);
+            DrawRectangleRounded({350, 525, 100, 50}, 0.3, 6, RED);
+            DrawTextEx(font, "Restart", {360, 535}, 24, 2, BLACK);
 
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                 Vector2 mousePosition = GetMousePosition();
-                Rectangle restartButton = {350, 500, 100, 50};
+                Rectangle restartButton = {350, 525, 100, 50};
 
                 if (CheckCollisionPointRec(mousePosition, restartButton)) {
                     game.reset();
                 }
             }
         }
+        DrawTextEx(font, TextFormat("Level %d", game.level), {330, 405}, 30, 2, WHITE);
+        DrawTextEx(font, TextFormat("Best %d", game.highScore), {330, 435}, 26, 2, LIGHTGRAY);
         DrawRectangleRounded({320, 55, 170, 60}, 0.3, 6, darkGrey);
 
         char scoreText[10];
@@ -69,6 +71,10 @@ void Tetris::run()
         DrawTextEx(font, scoreText, {320 + (170 - textSize.x) / 2, 65}, 38, 2, WHITE);
         DrawRectangleRounded({320, 215, 170, 180}, 0.3, 6, darkGrey);
         game.draw();
+        if (game.paused) {
+            DrawRectangle(11, 250, 300, 80, Fade(BLACK, 0.8f));
+            DrawTextEx(font, "PAUSED", {85, 262}, 56, 2, WHITE);
+        }
         EndDrawing();
     }
 }

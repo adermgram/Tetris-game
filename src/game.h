@@ -2,6 +2,7 @@
 #include "grid.h"
 #include "blocks.cpp"
 #include <string>
+#include <cstdio>
 
 class Game
 {
@@ -22,10 +23,15 @@ public:
     void handleInput();
 
     void moveBlockDown();
+    void togglePause();
+    float getFallInterval() const;
     void hardDrop();
 
     bool gameOver = false;
     int score = 0;
+    int highScore = 0;
+    int level = 1;
+    bool paused = false;
     Music music;
 
 private: // methods
@@ -40,6 +46,8 @@ private: // methods
     bool fits(const Block& block) const;
     Block getGhostBlock() const;
     void updateScore(unsigned int linesCleared, unsigned int moveDownPoints);
+    void loadHighScore();
+    void saveHighScore() const;
 
 private: // members
     Grid grid;
@@ -47,5 +55,7 @@ private: // members
     Block nextBlock;
     Sound rotateSound;
     Sound clearSound;
+    std::string highScorePath;
+    int totalLines = 0;
 
 };

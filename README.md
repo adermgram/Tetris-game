@@ -8,6 +8,7 @@ This project is a simple implementation of the classic Tetris game using the [ra
 - Score tracking
 - Next piece preview
 - Hard drop and ghost piece
+- Levels (speed increases every 10 lines), pause, and a saved high score
 - Music and sound effects
 
 
@@ -50,6 +51,7 @@ The goal of the game is to fit the falling Tetris blocks together to complete an
 - **Down Arrow Key**: Soft drop the block (faster descent)
 - **Up Arrow Key**: Rotate the block clockwise
 - **Space**: Hard drop (instantly drops the block, 2 points per row)
+- **P**: Pause / resume
 
 A translucent ghost piece shows where the block will land.
 

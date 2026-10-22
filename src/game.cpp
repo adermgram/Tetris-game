@@ -13,6 +13,7 @@ Game::Game()
 
 Game::~Game()
 {
+    saveHighScore();
     UnloadSound(rotateSound);
     UnloadSound(clearSound);
     UnloadMusicStream(music);
@@ -22,6 +23,8 @@ Game::~Game()
 bool Game::init(const std::string& build_path)
 {
     bool success = false;
+    highScorePath = build_path + "highscore.txt";
+    loadHighScore();
     InitAudioDevice();
     music = LoadMusicStream((build_path + "sounds/music.mp3").c_str());
     assert(music.ctxData);
@@ -91,6 +94,15 @@ void Game::draw() const
 void Game::handleInput()
 {
     int keyPressed = GetKeyPressed();
+    if (keyPressed == KEY_P && !gameOver)
+    {
+        togglePause();
+        return;
+    }
+    if (paused)
+    {
+        return;
+    }
     if (gameOver && keyPressed != 0)
     {
         gameOver = false;
@@ -198,6 +210,7 @@ void Game::lockBlock()
     if (!blockFits())
     {
         gameOver = true;
+        saveHighScore();
     }
     nextBlock = getRandomBlock();
     int rowsCleared = grid.clearFullRows();
@@ -205,6 +218,8 @@ void Game::lockBlock()
     {
         PlaySound(clearSound);
         updateScore(rowsCleared, 0);
+        totalLines += rowsCleared;
+        level = 1 + totalLines / 10;
     }
 }
 
@@ -228,6 +243,9 @@ void Game::reset()
     currentBlock = getRandomBlock();
     nextBlock = getRandomBlock();
     score = 0;
+    totalLines = 0;
+    level = 1;
+    paused = false;
     gameOver = false;
 }
 
@@ -251,6 +269,10 @@ void Game::updateScore(unsigned int linesCleared, unsigned int moveDownPoints)
         break;
     }
     score += moveDownPoints;
+    if (score > highScore)
+    {
+        highScore = score;
+    }
 }
 
 bool Game::fits(const Block& block) const
@@ -288,5 +310,50 @@ void Game::hardDrop()
         const int rowsDropped = currentBlock.getCellPositions().front().row - before;
         lockBlock();
         updateScore(0, rowsDropped * 2);
+    }
+}
+
+void Game::togglePause()
+{
+    paused = !paused;
+    if (paused)
+    {
+        PauseMusicStream(music);
+    }
+    else
+    {
+        ResumeMusicStream(music);
+    }
+}
+
+float Game::getFallInterval() const
+{
+    // 0.2s at level 1, 15% faster each level, never faster than 0.05s.
+    float interval = 0.2f;
+    for (int i = 1; i < level && interval > 0.05f; ++i)
+    {
+        interval *= 0.85f;
+    }
+    return interval > 0.05f ? interval : 0.05f;
+}
+
+void Game::loadHighScore()
+{
+    if (FILE* file = std::fopen(highScorePath.c_str(), "r"))
+    {
+        if (std::fscanf(file, "%d", &highScore) != 1)
+        {
+            highScore = 0;
+        }
+        std::fclose(file);
+    }
+}
+
+void Game::saveHighScore() const
+{
+    if (FILE* file = std::fopen(highScorePath.c_str(), "w"))
+    {
+        std::fprintf(file, "%d\n", highScore);
+        std::fclose(file);
     }
 }
