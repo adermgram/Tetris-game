@@ -22,6 +22,7 @@ public:
     void handleInput();
 
     void moveBlockDown();
+    void hardDrop();
 
     bool gameOver = false;
     int score = 0;
@@ -36,6 +37,8 @@ private: // methods
     void rotateBlock();
     void lockBlock();
     bool blockFits();
+    bool fits(const Block& block) const;
+    Block getGhostBlock() const;
     void updateScore(unsigned int linesCleared, unsigned int moveDownPoints);
 
 private: // members

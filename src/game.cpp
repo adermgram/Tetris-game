@@ -68,6 +68,7 @@ const std::vector<Block>& Game::getAllBlocks() const
 void Game::draw() const
 {
     grid.draw();
+    getGhostBlock().drawGhost(11, 11);
     currentBlock.draw(11, 11);
     switch (nextBlock.getId())
     {
@@ -94,6 +95,7 @@ void Game::handleInput()
     {
         gameOver = false;
         reset();
+        return;
     }
     switch (keyPressed)
     {
@@ -106,6 +108,9 @@ void Game::handleInput()
     case KEY_DOWN:
         moveBlockDown();
         updateScore(0, 1);
+        break;
+    case KEY_SPACE:
+        hardDrop();
         break;
     case KEY_UP:
         rotateBlock();
@@ -246,4 +251,42 @@ void Game::updateScore(unsigned int linesCleared, unsigned int moveDownPoints)
         break;
     }
     score += moveDownPoints;
+}
+
+bool Game::fits(const Block& block) const
+{
+    for (const Position& item : block.getCellPositions())
+    {
+        if (grid.isCellOutside(item.row, item.column) || !grid.isCellEmpty(item.row, item.column))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+Block Game::getGhostBlock() const
+{
+    Block ghost(currentBlock);
+    while (true)
+    {
+        ghost.move(1, 0);
+        if (!fits(ghost))
+        {
+            ghost.move(-1, 0);
+            return ghost;
+        }
+    }
+}
+
+void Game::hardDrop()
+{
+    if (!gameOver)
+    {
+        const int before = currentBlock.getCellPositions().front().row;
+        currentBlock = getGhostBlock();
+        const int rowsDropped = currentBlock.getCellPositions().front().row - before;
+        lockBlock();
+        updateScore(0, rowsDropped * 2);
+    }
 }
