@@ -61,7 +61,6 @@ void Tetris::run()
             }
         }
         DrawTextEx(font, TextFormat("Level %d", game.level), {330, 405}, 30, 2, WHITE);
-        DrawTextEx(font, TextFormat("Best %d", game.highScore), {330, 435}, 26, 2, LIGHTGRAY);
         DrawRectangleRounded({320, 55, 170, 60}, 0.3, 6, darkGrey);
 
         char scoreText[10];

@@ -13,7 +13,6 @@ Game::Game()
 
 Game::~Game()
 {
-    saveHighScore();
     UnloadSound(rotateSound);
     UnloadSound(clearSound);
     UnloadMusicStream(music);
@@ -23,8 +22,6 @@ Game::~Game()
 bool Game::init(const std::string& build_path)
 {
     bool success = false;
-    highScorePath = build_path + "highscore.txt";
-    loadHighScore();
     InitAudioDevice();
     music = LoadMusicStream((build_path + "sounds/music.mp3").c_str());
     assert(music.ctxData);
@@ -210,7 +207,6 @@ void Game::lockBlock()
     if (!blockFits())
     {
         gameOver = true;
-        saveHighScore();
     }
     nextBlock = getRandomBlock();
     int rowsCleared = grid.clearFullRows();
@@ -269,10 +265,6 @@ void Game::updateScore(unsigned int linesCleared, unsigned int moveDownPoints)
         break;
     }
     score += moveDownPoints;
-    if (score > highScore)
-    {
-        highScore = score;
-    }
 }
 
 bool Game::fits(const Block& block) const
@@ -337,23 +329,3 @@ float Game::getFallInterval() const
     return interval > 0.05f ? interval : 0.05f;
 }
 
-void Game::loadHighScore()
-{
-    if (FILE* file = std::fopen(highScorePath.c_str(), "r"))
-    {
-        if (std::fscanf(file, "%d", &highScore) != 1)
-        {
-            highScore = 0;
-        }
-        std::fclose(file);
-    }
-}
-
-void Game::saveHighScore() const
-{
-    if (FILE* file = std::fopen(highScorePath.c_str(), "w"))
-    {
-        std::fprintf(file, "%d\n", highScore);
-        std::fclose(file);
-    }
-}

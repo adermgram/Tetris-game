@@ -8,7 +8,7 @@ This project is a simple implementation of the classic Tetris game using the [ra
 - Score tracking
 - Next piece preview
 - Hard drop and ghost piece
-- Levels (speed increases every 10 lines), pause, and a saved high score
+- Levels (speed increases every 10 lines)and pause
 - Music and sound effects
 
 
