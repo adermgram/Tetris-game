@@ -250,15 +250,19 @@ void Game::updateScore(unsigned int linesCleared, unsigned int moveDownPoints)
     switch (linesCleared)
     {
     case 1:
-        score += 100;
+        score += 100 * level;
         break;
 
     case 2:
-        score += 300;
+        score += 300 * level;
         break;
 
     case 3:
-        score += 500;
+        score += 500 * level;
+        break;
+
+    case 4:
+        score += 800 * level;
         break;
 
     default:

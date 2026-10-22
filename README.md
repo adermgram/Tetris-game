@@ -58,7 +58,8 @@ A translucent ghost piece shows where the block will land.
 ### Scoring
 
 - Each cleared line adds points to your score.
-- The more lines you clear at once, the higher the score you will earn. 
+- Clearing 1, 2, 3 or 4 lines at once scores 100, 300, 500 or 800 points, multiplied by your current level.
+- Soft drop gives 1 point per row and hard drop 2 points per row.
 
 ## Development Notes
 
