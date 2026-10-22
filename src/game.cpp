@@ -1,10 +1,12 @@
 #include "game.h"
-#include <ctime>
 #include <random>
+#include <algorithm>
 #include <cassert>
 
 Game::Game()
-: grid()
+: rng(std::random_device{}())
+, bag()
+, grid()
 , currentBlock(getRandomBlock())
 , nextBlock(getRandomBlock())
 , rotateSound()
@@ -52,11 +54,21 @@ bool Game::init(const std::string& build_path)
     return success;
 }
 
-const Block& Game::getRandomBlock() const
+const Block& Game::getRandomBlock()
 {
+    // 7-bag: every piece appears once per bag, in shuffled order.
     const std::vector<Block>& blocks(getAllBlocks());
-    const int randomIndex (rand() % blocks.size());
-    return blocks[randomIndex];
+    if (bag.empty())
+    {
+        for (size_t i = 0; i < blocks.size(); ++i)
+        {
+            bag.push_back(static_cast<int>(i));
+        }
+        std::shuffle(bag.begin(), bag.end(), rng);
+    }
+    const int index = bag.back();
+    bag.pop_back();
+    return blocks[index];
 }
 
 const std::vector<Block>& Game::getAllBlocks() const

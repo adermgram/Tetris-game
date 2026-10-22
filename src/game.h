@@ -2,6 +2,8 @@
 #include "grid.h"
 #include "blocks.cpp"
 #include <string>
+#include <vector>
+#include <random>
 
 class Game
 {
@@ -35,7 +37,7 @@ public:
 private: // methods
     void moveBlockLeft();
     void moveBlockRight();
-    const Block& getRandomBlock() const;
+    const Block& getRandomBlock();
     const std::vector<Block>& getAllBlocks() const;
     bool isBlockOutside() const;
     void rotateBlock();
@@ -46,6 +48,8 @@ private: // methods
     void updateScore(unsigned int linesCleared, unsigned int moveDownPoints);
 
 private: // members
+    std::mt19937 rng;
+    std::vector<int> bag;
     Grid grid;
     Block currentBlock;
     Block nextBlock;
