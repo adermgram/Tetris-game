@@ -70,5 +70,6 @@ The goal of the game is to fit the falling Tetris blocks together to complete an
 
 ### Acknowledgement
  - [raylib](https://www.raylib.com/) for providing an easy-to-use C++ game programming library.
+ - [Programming with Nick](https://www.youtube.com/@programmingwithnick) - the first version of this game was built by following his YouTube Tetris tutorial.
 
 Feel free to modify the code and add more features to enhance the gameplay experience. Enjoy playing Tetris!
