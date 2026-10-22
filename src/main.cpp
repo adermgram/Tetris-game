@@ -4,5 +4,5 @@ int main(int argc, char* argv[])
 {
     Tetris game(argc, argv);
     game.run();
-    return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }
