@@ -17,28 +17,26 @@ This project is a simple implementation of the classic Tetris game using the [ra
 ## Getting Started
 
 ### Prerequisites
-- CMake (minimum version 3.17)
-- C++ compiler (e.g., g++)
+- [CMake](https://cmake.org/download/) 3.21 or newer
+- A C++ compiler: GCC/Clang on Linux and macOS, MinGW-w64 or MSVC on Windows
+- An internet connection on the first build (CMake downloads raylib 5.0)
+- Linux only: raylib's usual system packages (e.g. `libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev`)
 
-## Setup Instructions
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/adermgram/Tetris-game.git
-   cd Tetris-game
-   
-2. Ensure you have CMake installed and accessible in your environment.
+No editor or IDE is required. Any editor works (VS Code, Vim, Emacs, CLion...).
 
-### Building the Project
+### Build and run
 
-3. Build the project:
-  ```bash
-   mkdir build
-   cd build
-   cmake ..
-   make
-   ```
+```bash
+git clone https://github.com/adermgram/Tetris-game.git
+cd Tetris-game
+cmake --preset default            # on Windows with MinGW use: cmake --preset mingw
+cmake --build build
+cmake --build build --target run  # or run build/tetris directly
+```
 
-4. Compile the project and run the game
+For a debug build use `--preset debug` (output goes to `build-debug/`).
+Fonts and sounds are copied next to the executable, and the game finds them
+wherever it is launched from.
 
 ## Gameplay
 
@@ -58,7 +56,7 @@ The goal of the game is to fit the falling Tetris blocks together to complete an
 
 ## Development Notes
 
-- The game uses the `raylib` library for graphics and audio. It is automatically fetched using CMake's `FetchContent`.
+- The game uses the `raylib` library for graphics and audio. It is automatically fetched using CMake's `FetchContent` if not installed.
 - Ensure all resources (fonts and sounds) are placed in their respective folders to avoid runtime errors.
 
 

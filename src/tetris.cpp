@@ -17,11 +17,8 @@ bool Tetris::EventTriggered(float interval) {
 
 Tetris::Tetris(int argc, char* argv[])
 {
-    char* last = strrchr(argv[0], '/');
-    if (last != NULL) {
-        *++last = '\0';
-        build_path = argv[0];
-    }
+    // Assets live next to the executable, wherever the game is launched from.
+    build_path = GetApplicationDirectory();
 
     InitWindow(500, 620, "Tetris");
     SetTargetFPS(60);
