@@ -80,7 +80,6 @@ const std::vector<Block>& Game::getAllBlocks() const
 void Game::draw() const
 {
     grid.draw();
-    getGhostBlock().drawGhost(11, 11);
     currentBlock.draw(11, 11);
     switch (nextBlock.getId())
     {
@@ -295,16 +294,16 @@ bool Game::fits(const Block& block) const
     return true;
 }
 
-Block Game::getGhostBlock() const
+Block Game::getLandingBlock() const
 {
-    Block ghost(currentBlock);
+    Block landing(currentBlock);
     while (true)
     {
-        ghost.move(1, 0);
-        if (!fits(ghost))
+        landing.move(1, 0);
+        if (!fits(landing))
         {
-            ghost.move(-1, 0);
-            return ghost;
+            landing.move(-1, 0);
+            return landing;
         }
     }
 }
@@ -314,7 +313,7 @@ void Game::hardDrop()
     if (!gameOver)
     {
         const int before = currentBlock.getCellPositions().front().row;
-        currentBlock = getGhostBlock();
+        currentBlock = getLandingBlock();
         const int rowsDropped = currentBlock.getCellPositions().front().row - before;
         lockBlock();
         updateScore(0, rowsDropped * 2);

@@ -44,7 +44,7 @@ private: // methods
     void lockBlock();
     bool blockFits();
     bool fits(const Block& block) const;
-    Block getGhostBlock() const;
+    Block getLandingBlock() const;
     void updateScore(unsigned int linesCleared, unsigned int moveDownPoints);
 
 private: // members

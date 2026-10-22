@@ -61,14 +61,3 @@ void Block::undoRotation()
         rotationState = cells.size() - 1;
     }
 }
-
-void Block::drawGhost(int offsetX, int offsetY) const
-{
-    const auto& colors(getCellColors());
-
-    const std::vector<Position> tiles = getCellPositions();
-    for (const Position& item : tiles)
-    {
-        DrawRectangle(item.column * cellSize + offsetX, item.row * cellSize + offsetY, cellSize - 1, cellSize - 1, Fade(colors[id], 0.3f));
-    }
-}

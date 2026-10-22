@@ -7,7 +7,7 @@ This project is a simple implementation of the classic Tetris game using the [ra
 - Classic Tetris gameplay
 - Score tracking
 - Next piece preview
-- Hard drop and ghost piece
+- Hard drop
 - 7-bag piece randomizer (fair, no long droughts)
 - Levels (speed increases every 10 lines)and pause
 - Music and sound effects
@@ -54,7 +54,6 @@ The goal of the game is to fit the falling Tetris blocks together to complete an
 - **Space**: Hard drop (instantly drops the block, 2 points per row)
 - **P**: Pause / resume
 
-A translucent ghost piece shows where the block will land.
 
 ### Scoring
 

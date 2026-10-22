@@ -10,7 +10,6 @@ class Block
 public:
     Block();
     void draw(int offsetX, int offsetY) const;
-    void drawGhost(int offsetX, int offsetY) const;
     void move(int rows, int columns);
 
     using PositionVector = std::vector<Position>;
